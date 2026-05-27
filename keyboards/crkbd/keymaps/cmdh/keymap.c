@@ -37,7 +37,8 @@ enum layouts {
 #endif
 
 enum custom_keycodes {
-    KC_PASS = SAFE_RANGE,
+    KC_PASS1 = SAFE_RANGE,
+    KC_PASS2,
     /* KC_NAGI, */
     /* KC_DENG, */
 };
@@ -86,7 +87,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       _______,  KC_F11,  KC_F12, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, KC_PASS, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+      _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX,KC_PASS1,KC_PASS2, XXXXXXX, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           _______, _______, _______,    _______, _______, _______
                                       //`--------------------------'  `--------------------------'
@@ -96,9 +97,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (!record->event.pressed) return true;
     switch (keycode) {
-    case KC_PASS:
+    case KC_PASS1:
 #ifdef SECRET
-      SEND_STRING(PASS_STR SS_TAP(X_ENT));
+      SEND_STRING(PASS1_STR SS_TAP(X_ENT));
+      return false;
+#else
+      return true;
+#endif
+    case KC_PASS2:
+#ifdef SECRET
+      SEND_STRING(PASS2_STR SS_TAP(X_ENT));
       return false;
 #else
       return true;
